@@ -2,6 +2,7 @@
 *.lrc
 *.xml
 *.srt
+*.ass
 
 # Logs
 logs
