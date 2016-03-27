@@ -7,7 +7,7 @@ const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
 const globalShortcut = electron.globalShortcut;
 //主要全局变量
-var INDEX = 'file://' + __dirname + '/index.html';
+var INDEX = 'file://' + __dirname + '/app/index.html';
 var mainWindow = null;
 
 //应用退出动作
