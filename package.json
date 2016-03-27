@@ -2,21 +2,27 @@
   "name": "school-idol-board",
   "version": "0.1.0",
   "description": "Music player build using atom-shell and node.js and tell you who is singing in a playing music. Built for School Idol Project's group, μ's, and other idol group.",
-  "keywords": ["music player", "muse", "school idol"],
-  "author":{
-    "name":"pboymt",
-    "email":"pboymt@foxmail.com"
+  "keywords": [
+    "music player",
+    "muse",
+    "school idol"
+  ],
+  "author": {
+    "name": "pboymt",
+    "email": "pboymt@foxmail.com"
   },
-  "contributors":["pboymt"],
-  "homepage":"http://app.selflytv.com",
-  "repository":{
-    "type":"git",
-    "url":"https://github.com/pboymt/school-idol-board.git"
+  "contributors": [
+    "pboymt"
+  ],
+  "homepage": "http://app.selflytv.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pboymt/school-idol-board.git"
   },
-  "bugs":{
-    "email":"pboymt@foxmail.com"
+  "bugs": {
+    "email": "pboymt@foxmail.com"
   },
-  "license":"GPLv3",
+  "license": "GPL-3.0",
   "main": "./main.js",
   "scripts": {
     "start": "electron .",
@@ -24,10 +30,17 @@
   },
   "devDependencies": {
     "electron-packager": ">=5.2.1",
-    "electron-prebuilt": "0.37.x"
+    "electron-prebuilt": "^0.37.2"
   },
-  "dependencies": {
-  },
-  "os":["win32","!linux","!darwin"],
-  "cpu":["ia32","x64","!arm"]
+  "dependencies": {},
+  "os": [
+    "win32",
+    "!linux",
+    "!darwin"
+  ],
+  "cpu": [
+    "ia32",
+    "x64",
+    "!arm"
+  ]
 }
