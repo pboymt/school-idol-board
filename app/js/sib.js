@@ -198,4 +198,4 @@ class sib {
     }
   };
 };
-module.exports = new sib();
+module.exports = sib;
