@@ -40,6 +40,7 @@ app.on('ready', function() {
   });
 });
 
+// 注册全局快捷键
 var shortcutRegister = function() {
   globalShortcut.register('ctrl+d', function() {
     mainWindow.toggleDevTools();
@@ -51,6 +52,7 @@ var shortcutRegister = function() {
   });
 };
 
+// 注册主进程与渲染进程通讯事件
 var ipcRegister = function() {
   ipcMain.on('toggleFullScreen', function() {
     if (mainWindow.isFullScreen()) {
