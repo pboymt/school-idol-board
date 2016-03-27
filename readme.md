@@ -30,4 +30,4 @@ School idol Board Music Player（以下简称SIB），是一个基于[Electron](
 4. Aegisub制作的字幕文件需导出为.srt格式文件，并转换成TTML（Timed Text Markup Language）格式文件（[推荐转换地址](http://tools.rodrigopolo.com/srt2xml/)，勾选No CDATA选项），与mp3文件打包后提交到package.json的bugs字段提供的email即可
 
 ## 发行包
-正在制作，将很快生成……
+[下载地址](https://github.com/pboymt/school-idol-board/releases)（Windows 7,8.1,10 32/64位）
