@@ -47,12 +47,6 @@ class sib {
       su.isPlaying = true;
     });
   };
-  static tom(t) {
-    var timeReg = /^([0-9]{2}):([0-9]{2}):([0-9]{2}).([0-9]{3})/;
-    var m = t.match(timeReg);
-    var mm = m[1] * 3600000 + m[2] * 60000 + m[3] * 1000 + m[4] * 1;
-    return mm;
-  };
   //载入音乐列表
   loadList() {
     let parent = this;
