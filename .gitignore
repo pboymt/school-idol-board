@@ -3,6 +3,7 @@
 *.xml
 *.srt
 *.ass
+app/data/package/ipod
 
 # Logs
 logs
