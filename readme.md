@@ -1,1 +1,1 @@
-School idol Board Music Player(¦Ì'sic player)
+School idol Board Music Player(Î¼'sic player)
