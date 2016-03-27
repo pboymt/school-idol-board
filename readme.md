@@ -1,5 +1,6 @@
 # School idol Board Music Player (μ'sic player)
-----------
+
+
 ## 什么是School idol Board Music Player？
 School idol Board Music Player（以下简称SIB），是一个基于[Electron](https://github.com/atom/electron)开发的，能够在播放时高亮显示歌唱者的跨平台应用。
 
