@@ -4,6 +4,7 @@
 *.srt
 *.ass
 app/data/package/ipod
+*.mp3
 
 # Logs
 logs
