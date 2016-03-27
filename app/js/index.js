@@ -1,9 +1,9 @@
 'use strict';
 const electron = require('electron');
-window.$ = require('jquery.min.js');
+window.$ = require('./js/jquery.min.js');
 const remote = electron.remote;
 const ipcRenderer = electron.ipcRenderer;
-const sib = require('sib.js');
+const sib = require('./js/sib.js');
 
 var mlist = function mlist() {
   var xhr = new XMLHttpRequest();
