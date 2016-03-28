@@ -2,7 +2,7 @@
 class sib {
   constructor(options) {
     let su = this;
-    console.log('run');
+    //console.log('run');
     /*
      * 重要属性
      */
@@ -29,10 +29,12 @@ class sib {
     this.playingMID = 0;
     this.isPlaying = false;
     this.playBoard = {};
+    this.playList = [];
+    this.isListReset = true;
     this.themeBoard = 'default';
     // 初始化方法
     this.loadList();
-    this.loadMusic(0);
+    this.loadMusic(this.mlist.childNodes[3].getAttribute('mid'));
     //初始化监听事件
     this.player.addEventListener('ended', function() {
       console.log('ended');
@@ -47,24 +49,73 @@ class sib {
       su.isPlaying = true;
     });
   };
+  //鼠标滚轮事件
+  wheelEvent(delt) {
+    //console.log('wheelEvent');
+    let ml = document.getElementsByClassName('music-list')[0];
+    delt = event ? event.deltaY : delt;
+    if (delt > 0) {
+      var la = ml.lastChild;
+      ml.removeChild(la);
+      ml.insertBefore(la, ml.childNodes[0]);
+    } else if (delt < 0) {
+      var fi = ml.firstChild;
+      ml.removeChild(fi);
+      ml.appendChild(fi);
+    }
+  };
+  resetList() {
+    let ml = document.getElementsByClassName('music-item');
+    let pl = document.querySelector('.music-item.playing');
+    for (let i = 0; i < ml.length; i++) {
+      if (ml[i] == pl) {
+        //console.log(i);
+        for (let x = i; x != 3;) {
+          if (x > 3) {
+            this.wheelEvent(-100);
+            x--;
+          } else {
+            this.wheelEvent(100);
+            x++;
+          }
+        }
+        break;
+      }
+    }
+  };
   //载入音乐列表
   loadList() {
     let parent = this;
     this.mlist.innerHTML = '';
     let l = JSON.parse(this.getFile('./data/music.json'));
+    this.playList = l;
     console.log(l);
+    let bindClick = function() {
+      let ml = document.getElementsByClassName('music-item');
+      for (let i = 0; i < ml.length; i++) {
+        ml[i].classList.remove('playing');
+        if (ml[i] == this) {
+          ml[i].classList.add('playing');
+          setTimeout(function() {
+            parent.resetList();
+          }, 50);
+        }
+      }
+      parent.mPause();
+      //console.log(this.getAttribute('mid'));
+      parent.loadMusic(this.getAttribute('mid'));
+      parent.mPlay();
+    }
     for (let i = 3; i >= 0; i--) {
       let item = document.createElement('div');
       item.className = 'music-item';
       item.textContent = l[i]['name'];
-      item.setAttribute('mid', l[i]['mid']);
+      if (i == 0) {
+        item.setAttribute('mid', l[i]['mid']);
+      }
+      item.classList.add('playing');
       this.mlist.appendChild(item);
-      item.addEventListener('click', function() {
-        parent.mPause();
-        console.log(this.getAttribute('mid'));
-        parent.loadMusic(this.getAttribute('mid'));
-        parent.mPlay();
-      });
+      item.addEventListener('click', bindClick);
     }
     for (let x = l.length - 1; x > 3; x--) {
       let item = document.createElement('div');
@@ -72,26 +123,26 @@ class sib {
       item.textContent = l[x]['name'];
       item.setAttribute('mid', l[x]['mid']);
       this.mlist.appendChild(item);
-      item.addEventListener('click', function() {
-        parent.mPause();
-        console.log(this.getAttribute('mid'));
-        parent.loadMusic(this.getAttribute('mid'));
-        parent.mPlay();
-      });
+      item.addEventListener('click', bindClick);
     }
-    let wheelEvent = function() {
-      if (event.deltaY > 0) {
-        var la = this.lastChild;
-        this.removeChild(la);
-        this.insertBefore(la, this.childNodes[0]);
-      } else {
-        var fi = this.firstChild;
-        this.removeChild(fi);
-        this.appendChild(fi);
+    this.mlist.removeEventListener('mousewheel', function() {
+      parent.wheelEvent();
+      if (parent.isListReset) {
+        clearTimeout(this.isListReset);
       }
-    }
-    this.mlist.removeEventListener('mousewheel', wheelEvent)
-    this.mlist.addEventListener('mousewheel', wheelEvent);
+      parent.isListReset = setTimeout(function() {
+        parent.resetList();
+      }, 3000); //列表回弹延迟
+    });
+    this.mlist.addEventListener('mousewheel', function() {
+      parent.wheelEvent();
+      if (parent.isListReset) {
+        clearTimeout(this.isListReset);
+      }
+      parent.isListReset = setTimeout(function() {
+        parent.resetList();
+      }, 3000); //列表回弹延迟
+    });
   };
   //载入站位
   loadBoard(pkg) {
@@ -108,7 +159,7 @@ class sib {
   //谱面生成
   //设置定时
   timeOut(s, from, to) {
-    console.log('set');
+    //console.log('set');
     this.playingTimeline['show'].push(setTimeout(function() {
       s.classList.add('show');
     }, from - Math.round(this.player.currentTime * 1000)));
@@ -132,7 +183,6 @@ class sib {
     this.getMusic(mid);
     this.getMFile(mid);
     this.loadBoard(this.themeBoard);
-
   };
   //载入文件
   getFile(path) {
@@ -157,7 +207,7 @@ class sib {
    */
   mPlay(btn) {
     if (!this.isPlaying) {
-      btn = btn?btn:this.ctrlBtn[0];
+      btn = btn ? btn : this.ctrlBtn[0];
       var d = JSON.parse(this.getMFile());
       var j = d['timeline'];
       this.player.play();
@@ -176,7 +226,7 @@ class sib {
    */
   mPause(btn) {
     if (this.isPlaying) {
-      btn = btn?btn:this.ctrlBtn[0];
+      btn = btn ? btn : this.ctrlBtn[0];
       this.player.pause();
       for (let x in this.playingTimeline['show']) {
         clearTimeout(this.playingTimeline['show'][x]);
