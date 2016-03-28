@@ -42,10 +42,6 @@ window.onload = function() {
   var mainBtn = document.getElementsByClassName('main-btn');
   var ctrlBtn = document.getElementsByClassName('ctrl-btn');
   var s = new sib(loadConfig());
-  // for (var i = 0; i < singers.length; i++) {
-  //   //console.log(singers[i].classList[1]);
-  //   singers[i].style.backgroundImage = 'url(./data/package/default/' + singers[i].classList[1] + '.jpg)';
-  // }
   setTimeout(function() {
     document.getElementsByClassName('singers')[0].classList.add('fade');
   }, 500);
