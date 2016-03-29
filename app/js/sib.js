@@ -111,9 +111,9 @@ class sib {
       item.className = 'music-item';
       item.textContent = l[i]['name'];
       if (i == 0) {
-        item.setAttribute('mid', l[i]['mid']);
+        item.classList.add('playing');
       }
-      item.classList.add('playing');
+      item.setAttribute('mid', l[i]['mid']);
       this.mlist.appendChild(item);
       item.addEventListener('click', bindClick);
     }
