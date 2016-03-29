@@ -25,14 +25,16 @@
   "license": "GPL-3.0",
   "main": "./main.js",
   "scripts": {
-    "install-prebuilt":"npm install --save-dev electron-prebuilt",
-    "install-packager":"npm install --save-dev electron-packager",
+    "install-prebuilt": "npm install --save-dev electron-prebuilt",
+    "install-packager": "npm install --save-dev electron-packager",
     "start": "electron .",
-    "package": "electron-packager ./ SIB --platform=win32 --arch=all --asar=true --out ./build/release --overwrite"
+    "pkg": "node pkg.js",
+    "package": "electron-packager ./ SIB --platform=win32 --arch=ia32 --asar --ignore=build --out=build/release --overwrite --icon=icon2.ico"
   },
   "devDependencies": {
     "electron-packager": "^5.2.1",
-    "electron-prebuilt": "^0.37.2"
+    "electron-prebuilt": "^0.37.2",
+    "rcedit": "^0.4.0"
   },
   "dependencies": {},
   "os": [
