@@ -4,20 +4,11 @@ window.$ = require('./js/jquery.min.js');
 const remote = electron.remote;
 const ipcRenderer = electron.ipcRenderer;
 const sib = require('./js/sib.js');
+const electronConfig = require('./js/config.js');
 
-function loadConfig(){
-  if(!window.localStorage.config){
-    let defaultConfig = {
-      "autoPlayAfterClickList":true,
-      "useCustomPackage":false,
-      "musicListFile":["./data/muisc.json"],
-      "userDefalutPackage":"default"
-    };
-    window.localStorage.config = JSON.stringify(defaultConfig);
-    return defaultConfig;
-  }else{
-    return JSON.parse(window.localStorage.config);
-  }
+function loadConfig() {
+  let conf = new electronConfig();
+  return conf.getAll();
 };
 
 function autohideMouse() {
@@ -45,7 +36,7 @@ window.onload = function() {
   setTimeout(function() {
     document.getElementsByClassName('singers')[0].classList.add('fade');
   }, 500);
-  autohideMouse();
+  //autohideMouse();
   //mlist();
   //xmlConvert();
   mainBtn[0].addEventListener('change', function() {

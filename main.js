@@ -50,6 +50,7 @@ var shortcutRegister = function() {
     mainWindow.reload();
     console.log('Reload');
   });
+
 };
 
 // 注册主进程与渲染进程通讯事件

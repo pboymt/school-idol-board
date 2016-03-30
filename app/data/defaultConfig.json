@@ -1,0 +1,10 @@
+{
+  "configVer":2,
+  "autoPlay": true,
+  "autoNext": true,
+  "autoNextPlay": false,
+  "defaultPackage":"default",
+  "useCustomPackage":false,
+  "musicPath":["./data/music"],
+  "musicMap":["./data/music.json"]
+}

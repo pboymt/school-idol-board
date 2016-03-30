@@ -1,4 +1,6 @@
 "use strict";
+const fs = require('fs');
+const path = require('path');
 class sib {
   constructor(options) {
     let su = this;
@@ -6,16 +8,6 @@ class sib {
     /*
      * 重要属性
      */
-    this.defalutList = {
-      auth: '漫头',
-      list: [{
-        name: '輝夜の城で踊りたい',
-        singer: "μ's",
-        filename: '1.mp3',
-        lrc: '1.lrc',
-        timeline: '1.json'
-      }]
-    };
     this.singers = document.getElementsByClassName('singer');
     this.mainBtn = document.getElementsByClassName('main-btn');
     this.ctrlBtn = document.getElementsByClassName('ctrl-btn');
@@ -32,13 +24,24 @@ class sib {
     this.playList = [];
     this.isListReset = true;
     this.themeBoard = 'default';
+    //设置
+    this.config = options;
+    console.log(options);
     // 初始化方法
     this.loadList();
     this.loadMusic(this.mlist.childNodes[3].getAttribute('mid'));
     //初始化监听事件
     this.player.addEventListener('ended', function() {
       console.log('ended');
-      su.isPlaying = false;
+      if (su.config['autoNext']) {
+        su.mPause();
+        let eve = document.createEvent('HTMLEvents');
+        eve.initEvent("click", true, true);
+        eve.eventType = 'message';
+        let pl = document.querySelector('.music-item.playing');
+        console.log(pl.nextSibling.dispatchEvent(eve));
+      }
+      //su.isPlaying = false;
     });
     this.player.addEventListener('pause', function() {
       console.log('pause');
@@ -89,7 +92,7 @@ class sib {
     this.mlist.innerHTML = '';
     let l = JSON.parse(this.getFile('./data/music.json'));
     this.playList = l;
-    console.log(l);
+    //console.log(l);
     let bindClick = function() {
       let ml = document.getElementsByClassName('music-item');
       for (let i = 0; i < ml.length; i++) {
@@ -183,23 +186,27 @@ class sib {
     this.getMusic(mid);
     this.getMFile(mid);
     this.loadBoard(this.themeBoard);
+    if (this.config['autoPlay']) {
+      this.mPlay();
+    }
   };
   //载入文件
-  getFile(path) {
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", path, false);
-    xhr.send();
-    return xhr.responseText;
+  getFile(p) {
+    // let xhr = new XMLHttpRequest();
+    // xhr.open("GET", path, false);
+    // xhr.send();
+    // return xhr.responseText;
+    return fs.readFileSync(path.join('app', p));
   };
   //载入谱面文件
   getMFile(mid) {
     mid = mid ? mid : this.playingMID;
-    return this.getFile("./data/lrc/" + mid + ".json");
+    return this.getFile("data/lrc/" + mid + ".json");
   };
   //载入音乐
   getMusic(mid) {
     mid = mid ? mid : this.playingMID;
-    this.player.setAttribute('src', './data/music/' + mid + '.mp3');
+    this.player.setAttribute('src', 'data/music/' + mid + '.mp3');
   };
 
   /*
