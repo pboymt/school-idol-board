@@ -5,6 +5,8 @@
 *.ass
 app/data/package/ipod
 *.mp3
+*.zip
+build/lihui
 
 # Logs
 logs
