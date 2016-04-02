@@ -33,13 +33,15 @@ window.onload = function() {
   var mainBtn = document.getElementsByClassName('main-btn');
   var ctrlBtn = document.getElementsByClassName('ctrl-btn');
   var s = new sib(loadConfig());
+  var beforeSize = 'default';
   setTimeout(function() {
     document.getElementsByClassName('singers')[0].classList.add('fade');
   }, 500);
   //autohideMouse();
-  //mlist();
-  //xmlConvert();
   mainBtn[0].addEventListener('change', function() {
+    if (this.value != 'full') {
+      beforeSize = this.value;
+    }
     ipcRenderer.send('changeWindow', this.value);
     //console.log(this.value);
   });
@@ -48,11 +50,26 @@ window.onload = function() {
     //console.log(this.value);
   });
   ctrlBtn[0].addEventListener('click', function() {
-    console.log(s.isPlaying);
+    //console.log(s.isPlaying);
     if (s.isPlaying) {
-      s.mPause(this);
+      s.mPause();
     } else {
-      s.mPlay(this);
+      s.mPlay();
     }
   });
+  window.addEventListener('keydown', function() {
+    console.log(event.keyCode);
+    if (event.keyCode == 32) {
+      if (s.isPlaying) {
+        s.mPause();
+      } else {
+        s.mPlay();
+      }
+    } else if (event.keyCode == 27) {
+      if (mainBtn[0].value == 'full') {
+        ipcRenderer.send('changeWindow', beforeSize);
+        mainBtn[0].value = beforeSize;
+      }
+    }
+  })
 };
