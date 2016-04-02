@@ -11,6 +11,7 @@ class sib {
     this.singers = document.getElementsByClassName('singer');
     this.mainBtn = document.getElementsByClassName('main-btn');
     this.ctrlBtn = document.getElementsByClassName('ctrl-btn');
+    console.log(this.ctrlBtn[0]);
     this.player = document.getElementById('player');
     this.singer = document.getElementsByClassName('singer');
     this.mlist = document.getElementsByClassName('music-list')[0];
@@ -26,22 +27,21 @@ class sib {
     this.themeBoard = 'first';
     //设置
     this.config = options;
-    console.log(options);
+    //console.log(options);
     // 初始化方法
     this.loadList();
     this.loadMusic(this.mlist.childNodes[3].getAttribute('mid'), this.config['autoPlay']);
     //初始化监听事件
     this.player.addEventListener('ended', function() {
       console.log('ended');
+      su.mPause();
       if (su.config['autoNext']) {
-        su.mPause();
         let eve = document.createEvent('HTMLEvents');
         eve.initEvent("click", true, true);
         eve.eventType = 'message';
         let pl = document.querySelector('.music-item.playing');
         console.log(pl.nextSibling.dispatchEvent(eve));
       } else {
-        su.mPause();
         su.isPlaying = false;
       }
     });
@@ -69,21 +69,35 @@ class sib {
       ml.appendChild(fi);
     }
   };
-  resetList() {
+  resetList(parent) {
     let ml = document.getElementsByClassName('music-item');
     let pl = document.querySelector('.music-item.playing');
+    console.log(parent);
     for (let i = 0; i < ml.length; i++) {
       if (ml[i] == pl) {
         //console.log(i);
-        for (let x = i; x != 3;) {
+        let x = i;
+        let itv = setInterval(function() {
           if (x > 3) {
-            this.wheelEvent(-100);
+            parent.wheelEvent(-100);
             x--;
           } else {
-            this.wheelEvent(100);
+            parent.wheelEvent(100);
             x++;
           }
-        }
+          if (x == 3) {
+            clearInterval(itv);
+          }
+        }, 150);
+        // for (let x = i; x != 3;) {
+        //   if (x > 3) {
+        //     this.wheelEvent(-100);
+        //     x--;
+        //   } else {
+        //     this.wheelEvent(100);
+        //     x++;
+        //   }
+        // }
         break;
       }
     }
@@ -102,7 +116,7 @@ class sib {
         if (ml[i] == this) {
           ml[i].classList.add('playing');
           setTimeout(function() {
-            parent.resetList();
+            parent.resetList(parent);
           }, 50);
         }
       }
@@ -111,6 +125,7 @@ class sib {
       parent.loadMusic(this.getAttribute('mid'), parent.config['autoNextPlay']);
     }
     for (let i = l.length - 3; i < l.length; i++) {
+      //console.log(i);
       let item = document.createElement('div');
       item.className = 'music-item';
       item.textContent = l[i]['name'];
@@ -119,11 +134,12 @@ class sib {
       item.addEventListener('click', bindClick);
     }
     for (let x = 0; x < l.length - 3; x++) {
+      //console.log(x);
       let item = document.createElement('div');
+      item.className = 'music-item';
       if (x == 0) {
         item.classList.add('playing');
       }
-      item.className = 'music-item';
       item.textContent = l[x]['name'];
       item.setAttribute('mid', l[x]['mid']);
       this.mlist.appendChild(item);
@@ -132,19 +148,19 @@ class sib {
     this.mlist.removeEventListener('mousewheel', function() {
       parent.wheelEvent();
       if (parent.isListReset) {
-        clearTimeout(this.isListReset);
+        clearTimeout(parent.isListReset);
       }
       parent.isListReset = setTimeout(function() {
-        parent.resetList();
+        parent.resetList(parent);
       }, 3000); //列表回弹延迟
     });
     this.mlist.addEventListener('mousewheel', function() {
       parent.wheelEvent();
       if (parent.isListReset) {
-        clearTimeout(this.isListReset);
+        clearTimeout(parent.isListReset);
       }
       parent.isListReset = setTimeout(function() {
-        parent.resetList();
+        parent.resetList(parent);
       }, 3000); //列表回弹延迟
     });
   };
@@ -216,9 +232,8 @@ class sib {
   /*
    * 播放控制 - 播放
    */
-  mPlay(btn) {
+  mPlay() {
     if (!this.isPlaying) {
-      btn = btn ? btn : this.ctrlBtn[0];
       var d = JSON.parse(this.getMFile());
       var j = d['timeline'];
       this.player.play();
@@ -228,16 +243,15 @@ class sib {
         //console.log(x);
         this.setShow(j[x]['who'], j[x]['from'], j[x]['to']);
       }
-      btn.setAttribute('role', 'mpause');
+      this.ctrlBtn[0].setAttribute('role', 'mpause');
       this.isPlaying = true;
     }
   };
   /*
    * 播放控制 - 暂停
    */
-  mPause(btn) {
+  mPause() {
     if (this.isPlaying) {
-      btn = btn ? btn : this.ctrlBtn[0];
       this.player.pause();
       for (let x in this.playingTimeline['show']) {
         clearTimeout(this.playingTimeline['show'][x]);
@@ -248,7 +262,7 @@ class sib {
       document.getElementsByClassName('singers')[0].className = 'singers show';
       this.playingTimeline['show'] = [];
       this.playingTimeline['hide'] = [];
-      btn.setAttribute('role', 'mplay');
+      this.ctrlBtn[0].setAttribute('role', 'mplay');
       this.isPlaying = false;
     }
   };
