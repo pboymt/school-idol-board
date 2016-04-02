@@ -1,4 +1,10 @@
 "use strict";
+var path = require('path');
+var fs = require('fs');
+var cheerio = require('cheerio');
+var arg = process.argv.splice(2);
+var inpath = path.join('app/data/lrc', arg[0] + '.xml');
+var outpath = path.join('app/data/lrc', arg[0] + '.json');
 
 function tom(t) {
   var timeReg = /^([0-9]{2}):([0-9]{2}):([0-9]{2}).([0-9]{3})/;
@@ -7,37 +13,37 @@ function tom(t) {
   return mm;
 };
 
-function xmlConvert() {
+function xmlConvert(inpath, outpath) {
   var j = {
-    "name": "輝夜の城で踊りたい",
+    "name": "友情ノーチェンジ",
     "singer": "μ's",
+    "package": "first",
+    "packageFormat": "png",
     "position": [
-      "umi",
-      "maki",
-      "eri",
+      "niko",
+      "kotori",
       "nozomi",
+      "umi",
+      "rin",
+      "eri",
       "honoka",
       "hanayo",
-      "kotori",
-      "niko",
-      "rin"
+      "maki"
     ],
     "timeline": []
   };
-  console.warn('xmlConvert');
-  var path = './data/lrc/1.xml';
-  let xhr = new XMLHttpRequest();
-  xhr.open("GET", path, false);
-  xhr.send();
-  $(xhr.responseText).find('p').each(function() {
+  console.log('xmlConvert');
+  var xmlstr = fs.readFileSync(inpath).toString();
+  var $ = cheerio.load(xmlstr);
+  $(xmlstr).find('p').each(function() {
     var obj = {
-      from: sib.tom($(this).attr('begin')),
-      to: sib.tom($(this).attr('end')),
+      from: tom($(this).attr('begin')),
+      to: tom($(this).attr('end')),
       who: $(this).text().split(',')
     }
     j['timeline'].push(obj);
   });
-  console.log(JSON.stringify(j));
+  var fd = fs.openSync(outpath, 'a');
+  fs.writeSync(fd, JSON.stringify(j));
 };
-
-module.exports = xmlConvert;
+xmlConvert(inpath, outpath);
