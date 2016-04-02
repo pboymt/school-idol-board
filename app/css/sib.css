@@ -262,29 +262,29 @@
   opacity: 1;
 }
 .nozomi {
-  background-color: purple;
+  background-color: #800080;
 }
 .hanayo {
-  background-color: green;
+  background-color: #ADFF2F;
 }
-.eli {
-  background-color: aqua;
+.eri {
+  background-color: #00FFFF;
 }
 .umi {
-  background-color: blue;
+  background-color: #0000FF;
 }
-.nico {
-  background-color: pink;
+.niko {
+  background-color: #FFC0CB;
 }
 .maki {
-  background-color: red;
+  background-color: #FF0000;
 }
 .honoka {
-  background-color: orange;
+  background-color: #FFB11B;
 }
 .rin {
-  background-color: yellow;
+  background-color: #FFFF00;
 }
 .kotori {
-  background-color: silver;
+  background-color: #FFFFFF;
 }
