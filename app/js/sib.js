@@ -23,13 +23,13 @@ class sib {
     this.playBoard = {};
     this.playList = [];
     this.isListReset = true;
-    this.themeBoard = 'default';
+    this.themeBoard = 'first';
     //设置
     this.config = options;
     console.log(options);
     // 初始化方法
     this.loadList();
-    this.loadMusic(this.mlist.childNodes[3].getAttribute('mid'));
+    this.loadMusic(this.mlist.childNodes[3].getAttribute('mid'), this.config['autoPlay']);
     //初始化监听事件
     this.player.addEventListener('ended', function() {
       console.log('ended');
@@ -40,8 +40,10 @@ class sib {
         eve.eventType = 'message';
         let pl = document.querySelector('.music-item.playing');
         console.log(pl.nextSibling.dispatchEvent(eve));
+      } else {
+        su.mPause();
+        su.isPlaying = false;
       }
-      //su.isPlaying = false;
     });
     this.player.addEventListener('pause', function() {
       console.log('pause');
@@ -106,22 +108,21 @@ class sib {
       }
       parent.mPause();
       //console.log(this.getAttribute('mid'));
-      parent.loadMusic(this.getAttribute('mid'));
-      parent.mPlay();
+      parent.loadMusic(this.getAttribute('mid'), parent.config['autoNextPlay']);
     }
-    for (let i = 3; i >= 0; i--) {
+    for (let i = l.length - 3; i < l.length; i++) {
       let item = document.createElement('div');
       item.className = 'music-item';
       item.textContent = l[i]['name'];
-      if (i == 0) {
-        item.classList.add('playing');
-      }
       item.setAttribute('mid', l[i]['mid']);
       this.mlist.appendChild(item);
       item.addEventListener('click', bindClick);
     }
-    for (let x = l.length - 1; x > 3; x--) {
+    for (let x = 0; x < l.length - 3; x++) {
       let item = document.createElement('div');
+      if (x == 0) {
+        item.classList.add('playing');
+      }
       item.className = 'music-item';
       item.textContent = l[x]['name'];
       item.setAttribute('mid', l[x]['mid']);
@@ -148,13 +149,16 @@ class sib {
     });
   };
   //载入站位
-  loadBoard(pkg) {
-    pkg = pkg ? pkg : 'default';
-    var d = JSON.parse(this.getMFile(this.playingMID));
-    var p = d['position'];
+  loadBoard(mid) {
+    let d = JSON.parse(this.getMFile(mid));
+    let pkg = this.config['defaultPackage'];
+    if (!this.config['useCustomPackage']) {
+      pkg = d['package'];
+    }
+    let p = d['position'];
     for (let x = 0; x < this.singer.length; x++) {
       this.singer[x].className = 'singer ' + p[x];
-      this.singer[x].style.backgroundImage = 'url(./data/package/' + pkg + '/' + p[x] + '.jpg)';
+      this.singer[x].style.backgroundImage = 'url(./data/package/' + pkg + '/' + p[x] + '.' + d['packageFormat'] + ')';
       this.playBoard[p[x]] = this.singer[x];
     }
     this.playBoard['singer'] = document.getElementsByClassName('singers')[0];
@@ -180,13 +184,13 @@ class sib {
     }
   };
   //读取音乐所有相关文件
-  loadMusic(mid) {
+  loadMusic(mid, autoplay) {
     console.log('Load Music ID: ' + mid);
     this.playingMID = mid;
     this.getMusic(mid);
     this.getMFile(mid);
-    this.loadBoard(this.themeBoard);
-    if (this.config['autoPlay']) {
+    this.loadBoard(mid);
+    if (autoplay) {
       this.mPlay();
     }
   };
