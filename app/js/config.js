@@ -5,24 +5,24 @@ const electron = require('electron');
 const app = electron.remote.app;
 class electronConfig {
   constructor() {
-    console.log('electronConfig');
+    //console.log('electronConfig');
     let dataPath = app.getPath('userData');
     let appPath = app.getAppPath();
     let defaultPath = path.join('./', 'app', 'data', 'defaultConfig.json');
     let defaultFile = fs.readFileSync(defaultPath);
     this.defaultConfig = JSON.parse(defaultFile);
     this.configPath = path.join(dataPath, 'config.json');
-    console.log('appPath: ' + appPath);
-    console.log(this.configPath);
+    //console.log('appPath: ' + appPath);
+    //console.log(this.configPath);
     if (fs.existsSync(this.configPath) && fs.readFileSync(this.configPath) != '') {
       this.config = require(this.configPath);
       if (this.defaultConfig['configVer'] > this.config['configVer']) {
         this.upgradeConfig();
       }
-      console.log(this.config);
+      //console.log(this.config);
     } else {
-      console.log(fs.writeFileSync(this.configPath, defaultFile));
-      console.log(JSON.parse(this.defaultConfig));
+      //console.log(fs.writeFileSync(this.configPath, defaultFile));
+      //console.log(JSON.parse(this.defaultConfig));
     }
   };
   upgradeConfig() {
@@ -38,7 +38,7 @@ class electronConfig {
       }
     }
     fs.writeFileSync(this.configPath, JSON.stringify(this.config));
-    console.log('Config upgradeConfig!');
+    //console.log('Config upgradeConfig!');
   };
   getAll() {
     return this.config;
