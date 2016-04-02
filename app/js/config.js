@@ -26,13 +26,14 @@ class electronConfig {
     }
   };
   upgradeConfig() {
+    this.config['configVer'] = this.defaultConfig['configVer'];
     for (let x in this.defaultConfig) {
-      if (!this.config[x]) {
+      if (this.config[x] == null || this.config[x] == undefined) {
         this.config[x] = this.defaultConfig[x];
       }
     }
     for (let x in this.config) {
-      if (!this.defaultConfig[x]) {
+      if (this.defaultConfig[x] == null || this.defaultConfig[x] == undefined) {
         this.config[x] = null;
       }
     }
