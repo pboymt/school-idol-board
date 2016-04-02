@@ -1,6 +1,8 @@
 {
   "name": "仆らのLIVE 君とのLIFE",
   "singer": "μ's",
+  "package":"first",
+  "packageFormat":"png",
   "position": ["umi", "maki", "eri", "nozomi", "honoka", "hanayo", "kotori", "niko", "rin"],
   "timeline": [{
     "from": 28128,
