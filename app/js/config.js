@@ -8,7 +8,8 @@ class electronConfig {
     //console.log('electronConfig');
     let dataPath = app.getPath('userData');
     let appPath = app.getAppPath();
-    let defaultPath = path.join('./', 'app', 'data', 'defaultConfig.json');
+    //console.log(appPath);
+    let defaultPath = path.join(appPath,'app', 'data', 'defaultConfig.json');
     let defaultFile = fs.readFileSync(defaultPath);
     this.defaultConfig = JSON.parse(defaultFile);
     this.configPath = path.join(dataPath, 'config.json');
