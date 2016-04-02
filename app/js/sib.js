@@ -1,6 +1,9 @@
 "use strict";
 const fs = require('fs');
 const path = require('path');
+const electron = require('electron');
+const app = electron.remote.app;
+const appPath = app.getAppPath();
 class sib {
   constructor(options) {
     let su = this;
@@ -216,7 +219,7 @@ class sib {
     // xhr.open("GET", path, false);
     // xhr.send();
     // return xhr.responseText;
-    return fs.readFileSync(path.join('app', p));
+    return fs.readFileSync(path.join(appPath,'app', p));
   };
   //载入谱面文件
   getMFile(mid) {
