@@ -4,6 +4,7 @@ const path = require('path');
 const electron = require('electron');
 const app = electron.remote.app;
 const appPath = app.getAppPath();
+const dataPath = app.getPath('userData');
 class sib {
   constructor(options) {
     let su = this;
@@ -212,6 +213,9 @@ class sib {
     if (autoplay) {
       this.mPlay();
     }
+  };
+  getAsar(p){
+
   };
   //载入文件
   getFile(p) {

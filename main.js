@@ -6,6 +6,10 @@ const BW = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
 const globalShortcut = electron.globalShortcut;
+var fs = require('fs');
+var path = require('path');
+var appPath = app.getAppPath();
+var dataPath = app.getPath('userData');
 //主要全局变量
 var INDEX = 'file://' + __dirname + '/app/index.html';
 var mainWindow = null;
@@ -20,6 +24,7 @@ app.on('window-all-closed', function() {
 
 //应用就绪动作
 app.on('ready', function() {
+  hasInit();
   mainWindow = new BW({
     width: 960,
     height: 540,
@@ -39,7 +44,17 @@ app.on('ready', function() {
     mainWindow = null;
   });
 });
-
+var hasInit = function() {
+  console.log('检测' + path.join(dataPath, 'data') + '是否存在');
+  if (!fs.existsSync(path.join(dataPath, 'data'))) {
+    console.log('data不存在，转移初始数据');
+    console.log('生成歌曲列表');
+  } else {
+    console.log('data文件夹存在');
+  }
+  var init = require(path.join(appPath, 'app/js/init.js'));
+  init();
+};
 // 注册全局快捷键
 var shortcutRegister = function() {
   globalShortcut.register('ctrl+d', function() {

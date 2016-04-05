@@ -3,10 +3,11 @@
 *.xml
 *.srt
 *.ass
-app/data/package/ipod
 *.mp3
 *.zip
 build/lihui
+build/asar
+*.asar
 
 # Logs
 logs
