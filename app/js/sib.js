@@ -31,7 +31,8 @@ class sib {
     this.themeBoard = 'first';
     //设置
     this.config = options;
-    //console.log(options);
+    this.asarPath = this.config['asarPath'] || path.join(dataPath, 'data/asar');
+    console.log(this.asarPath);
     // 初始化方法
     this.loadList();
     this.loadMusic(this.mlist.childNodes[3].getAttribute('mid'), this.config['autoPlay']);
@@ -214,7 +215,7 @@ class sib {
       this.mPlay();
     }
   };
-  getAsar(p){
+  getAsar(p) {
 
   };
   //载入文件
@@ -223,17 +224,19 @@ class sib {
     // xhr.open("GET", path, false);
     // xhr.send();
     // return xhr.responseText;
-    return fs.readFileSync(path.join(appPath,'app', p));
+    return fs.readFileSync(path.join(appPath, 'app', p));
   };
   //载入谱面文件
   getMFile(mid) {
     mid = mid ? mid : this.playingMID;
-    return this.getFile("data/lrc/" + mid + ".json");
+    return fs.readFileSync(path.join(this.asarPath, mid + '.asar/data.json'));
   };
   //载入音乐
   getMusic(mid) {
     mid = mid ? mid : this.playingMID;
-    this.player.setAttribute('src', 'data/music/' + mid + '.mp3');
+    let mp = path.join(this.asarPath, mid + '.asar/music.mp3');
+    console.log(mp);
+    this.player.setAttribute('src', mp);
   };
 
   /*
