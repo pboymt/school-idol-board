@@ -12,7 +12,9 @@ var appPath = app.getAppPath();
 var dataPath = app.getPath('userData');
 //主要全局变量
 var INDEX = 'file://' + __dirname + '/app/index.html';
+var LOADING = 'file://' + __dirname + '/loading.html';
 var mainWindow = null;
+var loadWindow = null;
 
 //应用退出动作
 app.on('window-all-closed', function() {
@@ -21,30 +23,7 @@ app.on('window-all-closed', function() {
     app.quit();
   }
 });
-
-//应用就绪动作
-app.on('ready', function() {
-  hasInit();
-  mainWindow = new BW({
-    width: 960,
-    height: 540,
-    minWidth: 160,
-    minHeight: 90,
-    resizable: false,
-    frame: false,
-    show: false
-  });
-  mainWindow.loadURL(INDEX);
-  mainWindow.webContents.on('did-finish-load', function() {
-    mainWindow.show();
-  });
-  shortcutRegister();
-  ipcRegister();
-  mainWindow.on('closed', function() {
-    mainWindow = null;
-  });
-});
-var hasInit = function() {
+var hasInit = function(callback) {
   console.log('检测' + path.join(dataPath, 'data') + '是否存在');
   if (!fs.existsSync(path.join(dataPath, 'data'))) {
     console.log('data不存在，转移初始数据');
@@ -53,8 +32,50 @@ var hasInit = function() {
     console.log('data文件夹存在');
   }
   var init = require(path.join(appPath, 'app/js/init.js'));
-  init();
+  console.log(typeof init);
+  init(callback);
 };
+//应用就绪动作
+app.on('ready', function() {
+  loadWindow = new BW({
+    width: 300,
+    height: 150,
+    resizable: false,
+    frame: false,
+    transparent: true
+  });
+  loadWindow.loadURL(LOADING);
+  loadWindow.webContents.on('did-finish-load', function() {
+    loadWindow.show();
+  });
+  loadWindow.on('closed', function() {
+    loadWindow = null;
+  });
+  hasInit(function() {
+    mainWindow = new BW({
+      width: 960,
+      height: 540,
+      minWidth: 160,
+      minHeight: 90,
+      resizable: false,
+      frame: false,
+      show: false
+    });
+    mainWindow.loadURL(INDEX);
+    mainWindow.webContents.on('did-finish-load', function() {
+      mainWindow.show();
+      if (loadWindow) {
+        loadWindow.close();
+      }
+    });
+    shortcutRegister();
+    ipcRegister();
+    mainWindow.on('closed', function() {
+      mainWindow = null;
+    });
+  });
+});
+
 // 注册全局快捷键
 var shortcutRegister = function() {
   globalShortcut.register('ctrl+d', function() {
