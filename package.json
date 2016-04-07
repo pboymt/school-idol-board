@@ -32,6 +32,7 @@
     "xml": "node app/js/xml2json.js",
     "md5": "node app/js/md5.js",
     "pkg": "node pkg.js",
+    "m2a": "node m2a.js",
     "package": "electron-packager ./ SIB --platform=win32 --arch=ia32 --asar --ignore=build --out=build/release --overwrite --icon=icon2.ico"
   },
   "devDependencies": {
@@ -41,7 +42,9 @@
     "electron-prebuilt": "^0.37.2",
     "rcedit": "^0.4.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "qiniu": "^6.1.9"
+  },
   "os": [
     "win32",
     "!linux",
