@@ -9,7 +9,82 @@
 	<link rel="stylesheet" href="css/sib.css" />
 </head>
 <script src="js/index.js"></script>
+<style>
+	.config {
+		z-index: 999;
+		position: fixed;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 20px;
+		left: 0;
+		right: 0;
+		top: 30%;
+		/*bottom: 0;*/
+		display: block;
+		width: 350px;
+		height: 200px;
+		background-color: rgba(0, 0, 0, 0.5);
+		text-align: left;
+	}
+
+	.config table {
+		width: 100%;
+		color: white;
+		-webkit-user-select: none;
+	}
+
+	.config table tr td label input {
+		color: rgba(0, 0, 0, 1);
+		;
+	}
+
+	.config table tr td label input[type=text] {
+		outline: none;
+	}
+</style>
+
 <body>
+	<div class="config" style="display:none;">
+		<table>
+			<tbody>
+				<tr class="config-item">
+					<td>
+						<label><span>自动播放</span>
+							<input type="checkbox" name="autoPlay" class="config-value">
+						</label>
+					</td>
+				</tr>
+				<tr class="config-item">
+					<td>
+						<label><span>自动切换下一首</span>
+							<input type="checkbox" name="autoNext" class="config-value">
+						</label>
+					</td>
+				</tr>
+				<tr class="config-item">
+					<td>
+						<label><span>切换后自动播放</span>
+							<input type="checkbox" name="autoNextPlay" class="config-value">
+						</label>
+					</td>
+				</tr>
+				<tr class="config-item">
+					<td>
+						<label><span>强制自定义立绘</span>
+							<input type="checkbox" name="useCustomPackage" class="config-value">
+						</label>
+					</td>
+				</tr>
+				<tr class="config-item" style="display:none;">
+					<td>
+						<label><span>数据储存路径</span>
+							<input type="text" name="dataPath" class="config-value">
+						</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<audio id="player"></audio>
 	<div class="main">
 		<div class="singers">
@@ -24,6 +99,7 @@
 			<div class="singer niko"></div>
 		</div>
 		<div class="main-bar overshow">
+			<button class="main-btn">设置</button>
 			<select class="main-btn">
 				<option value="full">全屏</option>
 				<option value="mini">Mini</option>
