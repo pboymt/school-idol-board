@@ -9,7 +9,7 @@ class electronConfig {
     let dataPath = app.getPath('userData');
     let appPath = app.getAppPath();
     //console.log(appPath);
-    let defaultPath = path.join(appPath,'app', 'data', 'defaultConfig.json');
+    let defaultPath = path.join(appPath, 'app/data', 'defaultConfig.json');
     let defaultFile = fs.readFileSync(defaultPath);
     this.defaultConfig = JSON.parse(defaultFile);
     this.configPath = path.join(dataPath, 'config.json');
@@ -34,8 +34,8 @@ class electronConfig {
       }
     }
     for (let x in this.config) {
-      if (this.defaultConfig[x] == null || this.defaultConfig[x] == undefined) {
-        this.config[x] = null;
+      if (this.defaultConfig[x] == undefined) {
+        delete this.config[x];
       }
     }
     fs.writeFileSync(this.configPath, JSON.stringify(this.config));
@@ -47,9 +47,12 @@ class electronConfig {
   get(key) {
     return this.config[key];
   };
-  set(key, value) {
+  set(key, value, callback) {
     this.config[key] = value;
     fs.writeFileSync(this.configPath, JSON.stringify(this.config));
+    if (typeof callback == 'function') {
+      callback(this.config);
+    }
   };
 };
 module.exports = electronConfig;
