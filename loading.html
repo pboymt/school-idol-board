@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>μ'sic Player</title>
+	<link rel="stylesheet" href="css/normalize.css" />
+	<!-- <link rel="stylesheet" href="iconfont/iconfont.css" /> -->
+	<link rel="stylesheet" href="css/sib.css" />
+</head>
+<style>
+	* {
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+	}
+
+	.loading {
+		height: 100px;
+		width: 200px;
+		line-height: 100px;
+		font-size: 50px;
+	}
+</style>
+<script>
+	window.onload = function() {
+		var loading = document.querySelector('.loading');
+		var x = 1;
+		setInterval(function() {
+			var el = '';
+			switch (x) {
+				case 3:
+					el += '.';
+				case 2:
+					el += '.';
+				case 1:
+					el += '.';
+					break;
+			}
+			loading.textContent = 'Loading' + el;
+			x++;
+			if (x > 3) {
+				x = 1;
+			}
+		}, 500);
+	};
+</script>
+
+<body>
+	<div class="loading">Loading...</div>
+</body>
+
+</html>
