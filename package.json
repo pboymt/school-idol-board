@@ -1,6 +1,6 @@
 {
   "name": "school-idol-board",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Music player build using atom-shell and node.js and tell you who is singing in a playing music. Built for School Idol Project's group, μ's, and other idol group.",
   "keywords": [
     "music player",
